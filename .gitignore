@@ -22,3 +22,4 @@ Thumbs.db
 
 # 画像の変換元（scripts/optimize-images.py が退避させる。書き出し後のWebPのみ追跡する）
 /image-src/
+.env*
