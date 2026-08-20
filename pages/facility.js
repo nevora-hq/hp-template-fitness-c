@@ -1,5 +1,6 @@
 import Layout from "../components/Layout";
 import Cta from "../components/Cta";
+import SectionBand from "../components/SectionBand";
 import { SITE, FACILITIES, COMMUNITY, WHAT_TO_BRING } from "../lib/siteConfig";
 import { buildBreadcrumbJsonLd } from "../lib/structuredData";
 
@@ -40,6 +41,15 @@ export default function Facility({ jsonLd }) {
       canonicalPath="/facility/"
       wide
       jsonLd={jsonLd}
+      /* ページ見出しの全幅バンド（装飾）。文字は重ねないため暗幕は出さない。
+         幅は scripts/optimize-images.py の WEBP_JOBS と揃えること。 */
+      hero={
+        <SectionBand
+          base="/images/band/page-facility"
+          widths={[640, 1024, 1600]}
+          objectPosition="50% 45%"
+        />
+      }
     >
       <h1 className="page-title">施設案内</h1>
       <p className="page-lead">
@@ -53,10 +63,29 @@ export default function Facility({ jsonLd }) {
         </h2>
         <div className="card-grid card-grid--2">
           {FACILITIES.map((item) => (
-            <div key={item.slug} className="program-card">
-              <h3 className="program-card-name">{item.name}</h3>
-              <p className="program-card-body">{item.body}</p>
-              {item.note && <p className="program-card-target">{item.note}</p>}
+            <div key={item.slug} className="facility-card">
+              {/* 画像は lib/siteConfig.js の FACILITIES[].image（拡張子なしのパス）から組み立てる。
+                  srcSetの幅は scripts/optimize-images.py の WEBP_JOBS と必ず一致させること
+                  （存在しない幅を書くと404になる）。
+                  width/height は表示比率と同じ4:3を渡し、読み込み前の高さを確保する。 */}
+              {item.image && (
+                <img
+                  src={`${item.image}.webp`}
+                  srcSet={`${item.image}-640.webp 640w, ${item.image}-1200.webp 1200w`}
+                  sizes="(min-width: 768px) 45vw, 100vw"
+                  alt={`${item.name}の様子`}
+                  className="facility-card-image"
+                  width={1200}
+                  height={900}
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
+              <div className="facility-card-inner">
+                <h3 className="program-card-name">{item.name}</h3>
+                <p className="program-card-body">{item.body}</p>
+                {item.note && <p className="program-card-target">{item.note}</p>}
+              </div>
             </div>
           ))}
         </div>

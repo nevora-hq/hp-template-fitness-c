@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Layout from "../components/Layout";
 import Cta from "../components/Cta";
+import SectionBand from "../components/SectionBand";
 import FaqAccordion from "../components/FaqAccordion";
 import { SITE, FAQS, OUT_OF_SCOPE, OUT_OF_SCOPE_NOTE } from "../lib/siteConfig";
 import { buildBreadcrumbJsonLd, buildFaqJsonLd } from "../lib/structuredData";
@@ -28,6 +29,15 @@ export default function Faq({ jsonLd }) {
       canonicalPath="/faq/"
       panel
       jsonLd={jsonLd}
+      /* ページ見出しの全幅バンド（装飾）。文字は重ねないため暗幕は出さない。
+         幅は scripts/optimize-images.py の WEBP_JOBS と揃えること。 */
+      hero={
+        <SectionBand
+          base="/images/band/page-faq"
+          widths={[640, 1024, 1600]}
+          objectPosition="50% 45%"
+        />
+      }
     >
       <h1 className="page-title">よくあるご質問</h1>
       <p className="page-lead">

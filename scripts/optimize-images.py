@@ -44,11 +44,23 @@ WEBP_QUALITY = 82
 # このサンプルサイトで使う画像だけを対象にする。
 # (制作会社サイト用のテンプレート見本・制作実績の画像は削除済みのため対象外)
 # 幅は参照側と必ず揃えること:
-#   hero    … components/HeroBanner.js の srcSet と pages/index.js の preload
-#   band-01 … pages/index.js の <SectionBand widths={...}>
+#   hero      … components/HeroBanner.js の srcSet と pages/index.js の preload
+#   band系    … <SectionBand widths={...}> に渡している値
+#   facility系… pages/facility.js の srcSet（表示は最大569px幅のため 640 と 1200 の2段）
 WEBP_JOBS = [
     ("images/hero/home-hero", [640, 1024, 1600]),
     ("images/band/band-01", [640, 1024, 1600]),
+    ("images/band/band-02", [640, 1024, 1600]),
+    ("images/band/page-price", [640, 1024, 1600]),
+    ("images/band/page-facility", [640, 1024, 1600]),
+    ("images/band/page-flow", [640, 1024, 1600]),
+    ("images/band/page-faq", [640, 1024, 1600]),
+    ("images/facility/machine", [640, 1200]),
+    ("images/facility/freeweight", [640, 1200]),
+    ("images/facility/studio", [640, 1200]),
+    ("images/facility/locker", [640, 1200]),
+    ("images/facility/lounge", [640, 1200]),
+    ("images/facility/barrier", [640, 1200]),
 ]
 
 FAVICON_PNG_SIZES = [16, 32, 48]
@@ -193,18 +205,18 @@ def build_logo_and_ogp():
 # 文言を変えるときはここを編集して --force で作り直す。
 # OGPのロゴ台座の色。ロゴが「明るい図柄＋透過」なら白、
 # 「黒背景に金の図柄」のような暗いロゴなら黒にして、地になじませる。
-# このサンプル(NAGI COFFEE)は白地に深緑の線画のため白。
+# このサンプル(AOZORA FITNESS)は白地に青の図形のため白。
 OGP_MARK_BG = (255, 255, 255)
 
 OGP_TEXT = {
-    "brand": "NAGI COFFEE",
-    "title": "自由が丘のカフェ",
-    "sub": "自家焙煎コーヒーと、その日に焼いた菓子／8:00〜18:00",
+    "brand": "AOZORA FITNESS",
+    "title": "運動、はじめてで大丈夫。",
+    "sub": "つつじヶ丘駅から徒歩5分／見学・体験は無料です",
 }
 
 # 文字ブロックの中心を置く横位置(画面幅に対する比率)。
 # 背景写真の余白がどちら側にあるかに合わせて動かす。
-# このサンプルの背景は右側が空いた俯瞰写真のため、中央より右に寄せる。
+# このサンプルの背景は右側が白壁で空いているため、中央より右に寄せる。
 OGP_TEXT_CENTER = 0.62
 FONT_BOLD = "C:/Windows/Fonts/YuGothB.ttc"
 FONT_MEDIUM = "C:/Windows/Fonts/YuGothM.ttc"
@@ -273,7 +285,9 @@ def build_ogp():
     # 帯の境目が線として出ないよう、上下を徐々に薄くする。
     scrim = Image.new("RGBA", (W, H), (14, 26, 22, 0))
     sd = ImageDraw.Draw(scrim)
-    top, top_full, bottom_full, bottom, peak = 90, 200, 450, 570, 95
+    # peak は暗幕の最大不透明度(0-255)。背景が明るいほど上げる。
+    # この背景は白壁のため、白文字とのコントラスト比4.5:1以上を確保できる値にしている。
+    top, top_full, bottom_full, bottom, peak = 80, 180, 470, 580, 158
     for y in range(top, bottom):
         if y < top_full:
             alpha = peak * (y - top) / (top_full - top)

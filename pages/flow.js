@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Layout from "../components/Layout";
 import Cta from "../components/Cta";
+import SectionBand from "../components/SectionBand";
 import {
   SITE,
   FLOW_LEAD,
@@ -36,6 +37,15 @@ export default function Flow({ jsonLd }) {
       canonicalPath="/flow/"
       wide
       jsonLd={jsonLd}
+      /* ページ見出しの全幅バンド（装飾）。文字は重ねないため暗幕は出さない。
+         幅は scripts/optimize-images.py の WEBP_JOBS と揃えること。 */
+      hero={
+        <SectionBand
+          base="/images/band/page-flow"
+          widths={[640, 1024, 1600]}
+          objectPosition="50% 45%"
+        />
+      }
     >
       <h1 className="page-title">見学・体験の流れ</h1>
       <p className="page-lead">{FLOW_LEAD}</p>

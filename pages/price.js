@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Layout from "../components/Layout";
 import Cta from "../components/Cta";
+import SectionBand from "../components/SectionBand";
 import {
   SITE,
   PROGRAMS,
@@ -36,6 +37,15 @@ export default function Price({ jsonLd }) {
       canonicalPath="/price/"
       wide
       jsonLd={jsonLd}
+      /* ページ見出しの全幅バンド（装飾）。文字は重ねないため暗幕は出さない。
+         幅は scripts/optimize-images.py の WEBP_JOBS と揃えること。 */
+      hero={
+        <SectionBand
+          base="/images/band/page-price"
+          widths={[640, 1024, 1600]}
+          objectPosition="50% 45%"
+        />
+      }
     >
       <h1 className="page-title">プログラム・料金</h1>
       <p className="page-lead">{PLAN_NOTE}</p>

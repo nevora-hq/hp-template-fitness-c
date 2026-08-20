@@ -81,16 +81,20 @@ npm run build
 
 ### 3. 画像を用意する
 
-**現在リポジトリに画像がありません。**（レイアウトは画像なしで完成させてあります。後日追加する前提です）
-コンセプトに合う画像（明るいマシンエリア・スタジオ・ラウンジなど。特定の個人が判別できる写真は避ける）を用意してください。
+**画像は配置済みです**（2026-08-21）。差し替えるときは下記のパスに元画像（PNG/JPEG）を置いて
+`python scripts/optimize-images.py` を実行してください。人物が判別できる写真は使いません。
 
-| パス | 用途 |
-|---|---|
-| `public/images/hero/home-hero{,-640,-1024,-1600}.webp` | ファーストビュー |
-| `public/images/band/band-01{,-640,-1024,-1600}.webp` | セクション区切りの帯 |
-| `public/images/logo.png` | 構造化データ用ロゴ（正方形・112px以上） |
-| `public/images/ogp.png` | OGP（1200×630・PNGのまま） |
-| `public/favicon.ico` `favicon-16/32/48.png` `apple-touch-icon.png` `images/favicon.svg` | ファビコン |
+| パス | 用途 | 元画像の推奨サイズ |
+|---|---|---|
+| `public/images/hero/home-hero{,-640,-1024,-1600}.webp` | ファーストビュー | 1920×1152（5:3） |
+| `public/images/band/band-01{,-02}{,-640,-1024,-1600}.webp` | トップのセクション帯（2本） | 1920×640（3:1） |
+| `public/images/band/page-{price,facility,flow,faq}{,-640,-1024,-1600}.webp` | 下層ページの見出し帯（4枚） | 1920×640（3:1） |
+| `public/images/facility/{machine,freeweight,studio,locker,lounge,barrier}{,-640,-1200}.webp` | 施設案内の設備カード（6枚） | 1200×900（4:3） |
+| `public/images/logo.png` | ロゴマーク（ファビコン一式とOGPの元） | 1024×1024（正方形・白背景） |
+| `public/images/ogp-bg.png` → `ogp.png` | OGP（背景写真に文言を合成して1200×630で書き出す） | 1600×840 |
+| `public/favicon.ico` `favicon-16/32/48.png` `apple-touch-icon.png` `images/favicon.svg` | ファビコン（logo.pngから自動生成） | − |
+
+画像の仕様・生成プロンプトは `docs/画像仕様.md` にまとめてあります。
 
 ヒーロー画像を差し替えたら、`components/HeroBanner.js` の `srcSet` と
 `pages/index.js` の `<link rel="preload">` の `imageSrcSet` を**同じ内容に保ってください**
@@ -108,9 +112,10 @@ python scripts/optimize-images.py --force  # 変換済みも作り直す
 | 置くファイル | 書き出されるもの |
 |---|---|
 | `images/hero/home-hero.png` | `home-hero.webp` ＋ `-640/-1024/-1600` |
-| `images/band/band-01.png` | 同上 |
+| `images/band/*.png`（band-01/02・page-*） | 同上 |
+| `images/facility/*.png`（設備6枚） | `*.webp` ＋ `-640/-1200` |
 | `images/logo.png` | 512×512に調整＋ファビコン一式（`favicon.ico` / `favicon-16,32,48.png` / `apple-touch-icon.png` / `images/favicon.svg`） |
-| `images/ogp.png` | 1200×630に切り抜き（PNGのまま。WebP非対応のSNSクローラがあるため） |
+| `images/ogp-bg.png` | 1200×630に切り抜き、ロゴと文言を合成して `ogp.png` を書き出す（文言は `scripts/optimize-images.py` の `OGP_TEXT`） |
 
 変換元のPNG/JPEGは `image-src/` へ自動で移動します（Gitの追跡対象外・本番には配信されません）。
 縮小のみ行い、引き伸ばしはしません。

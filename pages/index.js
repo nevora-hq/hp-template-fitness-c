@@ -181,6 +181,18 @@ export default function Home({ jsonLd }) {
           </div>
         </section>
 
+        {/* 画像バンド2枚目。public/images/band/band-02*.webp を差し替える */}
+        <SectionBand
+          base="/images/band/band-02"
+          widths={[640, 1024, 1600]}
+          objectPosition="50% 45%"
+        >
+          <h2 className="section-band-title">見学・体験は無料です</h2>
+          <p className="section-band-lead">
+            ご予約なしでもご案内できます。その日にお決めいただく必要はありません。
+          </p>
+        </SectionBand>
+
         {/* ---- 見学・体験の流れ(抜粋) ---- */}
         <section className="home-stripe">
           <div className="container container--wide">

@@ -616,6 +616,22 @@ main {
   }
 }
 
+/* 下層ページの見出しバンド（Layoutのhero経由でmain直下に入る）。
+   main の上余白(40px)を打ち消して、ヘッダーの直下から全幅で見せる。
+   ※ 負のマージンは main の padding-top と必ず同じ値にすること
+      （値がずれると余白が残る・本文に食い込む）。
+      左右方向には負のマージンを使っていないため、横スクロールは発生しない。 */
+main:not(.main--full) > .section-band:first-child {
+  margin-top: -40px;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 600px) {
+  main:not(.main--full) > .section-band:first-child {
+    margin-bottom: 28px;
+  }
+}
+
 /* ---- 見出し・共通パーツ ---- */
 .page-title {
   margin: 0 0 12px;
@@ -793,6 +809,42 @@ main {
 
 @media (max-width: 600px) {
   .program-card {
+    padding: 20px 16px;
+  }
+}
+
+/* 画像つきの施設カード（/facility）。
+   写真をカードの端まで出すため、カード自体は padding を持たず、
+   文章側(.facility-card-inner)に持たせている
+   （負のマージンで外へはみ出させる作りにすると、
+     .program-card のようにブレークポイントごとに padding が変わる場合に
+     はみ出し量がずれて横スクロールの原因になるため）。 */
+.facility-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.facility-card-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  /* 画像の下辺とカードの角丸が二重に見えないよう、上側だけ角を丸める */
+  border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
+}
+
+.facility-card-inner {
+  padding: 24px;
+}
+
+@media (max-width: 600px) {
+  .facility-card-inner {
     padding: 20px 16px;
   }
 }
